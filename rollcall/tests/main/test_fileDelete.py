@@ -1,6 +1,6 @@
 import unittest
 import os
-import helper
+from rollcall.tests import helper
 from rollcall.main import fileDelete, fileExists
 
 class TestfileDelete(unittest.TestCase):

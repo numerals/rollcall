@@ -4,6 +4,7 @@ Main module
 
 import os
 import func_json as fj
+import display
 import exceptions as exc
 from datetime import date
 
@@ -18,7 +19,7 @@ def full_path_to(fName, dire=pDir()):
     """
     joins the filename and the directory path
     """
-    path = os.path.join(fName, dire)
+    path = os.path.join(dire, fName)
     return path
 
 def fileExists(fName):
@@ -40,23 +41,6 @@ def add(json_str, sub):
     with open(sub, "w") as recordFile:
         recordFile.write(json_str)
 
-def fileDelete(fName):
-    """
-    Delete a file and return status
-    """
-    if fileExists(fName):
-        os.remove(fName)
-        return True
-    return False
-
-def delete(sub):
-    """
-    Delete a subject
-    """
-    if fileDelete(sub):
-        return True
-    return False
-
 def update_json_file(tag, sub, date=date.today()):
     """
     Update a subject
@@ -75,31 +59,28 @@ def update_json_file(tag, sub, date=date.today()):
         recordFile.write(newdata)
     return True
 
-def display_names(ext='.json', dire=pDir()):
+def fileDelete(fName):
     """
-    yields all subject name
+    Delete a file and return status
     """
-    for filename in os.listdir(dire):
-        name, extension = os.path.splitext(fName)
-        if extension == ext:
-            yield filename
+    if fileExists(fName):
+        os.remove(fName)
+        return True
+    return False
 
+def delete(sub):
+    """
+    Delete a subject
+    """
+    if fileDelete(sub):
+        return True
+    return False
 
-def display_subject():
+def reset(ext='.json', dire=pDir()):
     """
-    displays a particular subject
+    removes all subjects
+    a clean fresh start
     """
-    pass
-
-def display_all_subjects():
-    """
-    displays all the subjects
-    preferably a generator
-    """
-    pass
-
-def reset():
-    """
-    Reset subjects data
-    """
-    pass
+    for filename in display.display_names(ext, dire):
+        path = full_path_to(filename, dire)
+        os.remove(path)
