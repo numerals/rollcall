@@ -59,6 +59,15 @@ def update_json_file(tag, sub, date=date.today()):
         recordFile.write(newdata)
     return True
 
+def display_names(ext='.json', dire=pDir()):
+    """
+    yields all subject names
+    """
+    for filename in os.listdir(dire):
+        name, extension = os.path.splitext(filename)
+        if extension == ext:
+            yield filename
+
 def fileDelete(fName):
     """
     Delete a file and return status
