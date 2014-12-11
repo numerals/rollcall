@@ -18,7 +18,7 @@ class Testupdate_json_file(unittest.TestCase):
         self.sub = os.path.join(self.dire, 'sub.json')
         json = gen_dict(date.today(), [0, 1, 2, 3, 4, 5, 6])
         json = dict_to_json(json)
-        add(str(json), 'sub', self.dire)
+        add(str(json), self.sub)
 
     def test_update_json_file_file_exists(self):
         self.assertTrue(fileExists(self.sub))

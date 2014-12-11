@@ -14,6 +14,13 @@ def pDir():
     """
     return os.getcwd()
 
+def full_path_to(fName, dire=pDir()):
+    """
+    joins the filename and the directory path
+    """
+    path = os.path.join(fName, dire)
+    return path
+
 def fileExists(fName):
     """
     Check if a file exists
@@ -22,16 +29,15 @@ def fileExists(fName):
         return True
     return False
 
-def add(json_str, sub, dire=pDir()):
+def add(json_str, sub):
     """
     Add a subject
     creates a new sub.json file
     """
-    path = os.path.join(dire, sub + '.json')
-    if fileExists(path):
+    if fileExists(sub):
         raise exc.SubjectExists("Records for this subject are already present")
 
-    with open(path, "w") as recordFile:
+    with open(sub, "w") as recordFile:
         recordFile.write(json_str)
 
 def fileDelete(fName):
@@ -47,7 +53,7 @@ def delete(sub):
     """
     Delete a subject
     """
-    if fileDelete(sub + '.json'):
+    if fileDelete(sub):
         return True
     return False
 
@@ -69,13 +75,13 @@ def update_json_file(tag, sub, date=date.today()):
         recordFile.write(newdata)
     return True
 
-def display_names(dire=pDir()):
+def display_names(ext='.json', dire=pDir()):
     """
     yields all subject name
     """
     for filename in os.listdir(dire):
-        name, ext = os.path.splitext(fName)
-        if ext == '.json':
+        name, extension = os.path.splitext(fName)
+        if extension == ext:
             yield filename
 
 

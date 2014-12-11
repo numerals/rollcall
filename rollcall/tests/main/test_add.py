@@ -17,11 +17,11 @@ class Testadd(unittest.TestCase):
 
     def test_add_file_exists(self):
         self.assertTrue(fileExists(self.dummy))
-        self.assertRaises(SubjectExists, add, self.json, 'dummy', self.dire)
+        self.assertRaises(SubjectExists, add, self.json, self.dummy)
 
     def test_add_file_does_not_exist(self):
         self.assertFalse(fileExists(self.new))
-        add(self.json, 'new', self.dire)
+        add(self.json, self.new)
         self.assertTrue(fileExists(self.new))
         os.remove(self.new)
 
