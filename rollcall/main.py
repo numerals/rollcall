@@ -22,7 +22,7 @@ def fileExists(fName):
         return True
     return False
 
-def add(json_str, sub, dire):
+def add(json_str, sub, dire=pDir()):
     """
     Add a subject
     creates a new sub.json file

@@ -52,7 +52,7 @@ def update_json_string(json_string, date, status):
     if formatted_date not in subject_data.keys():
         reply = ""
         while reply not in "ny":
-            reply = raw_input(print "Invalid date. Extra class (y/n)?")
+            reply = raw_input("Invalid date. Extra class (y/n)?")
         if reply == "n":
             return
 
