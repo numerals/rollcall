@@ -90,6 +90,6 @@ def reset(ext='.json', dire=pDir()):
     removes all subjects
     a clean fresh start
     """
-    for filename in display.display_names(ext, dire):
+    for filename in display_names(ext, dire):
         path = full_path_to(filename, dire)
         os.remove(path)
