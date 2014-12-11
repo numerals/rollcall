@@ -3,14 +3,10 @@ Main module
 """
 
 import os
-from func_json import *
+import func_json as fj
+import exceptions as exc
 from datetime import date
 
-tags = { 'a' : "absent",
-         'p' : "present",
-         'f' : "future",
-         'h' : "holiday",
-         'o' : "other" }
 
 def pDir():
     """
@@ -18,65 +14,76 @@ def pDir():
     """
     return os.getcwd()
 
-def fileExists(fName, dire=pDir()):
+def full_path_to(fName, dire=pDir()):
+    """
+    joins the filename and the directory path
+    """
+    path = os.path.join(fName, dire)
+    return path
+
+def fileExists(fName):
     """
     Check if a file exists
     """
-    if os.path.isfile(os.path.join(dire, fName)):
+    if os.path.isfile(fName):
         return True
     return False
 
-def fileDelete(fName, dire=pDir()):
+def add(json_str, sub):
+    """
+    Add a subject
+    creates a new sub.json file
+    """
+    if fileExists(sub):
+        raise exc.SubjectExists("Records for this subject are already present")
+
+    with open(sub, "w") as recordFile:
+        recordFile.write(json_str)
+
+def fileDelete(fName):
     """
     Delete a file and return status
     """
     if fileExists(fName):
-        os.remove(os.path.join(dire, fName))
+        os.remove(fName)
         return True
     return False
-
-def add(sub, json_str):
-    """
-    Add a subject
-    """
-    if fileExists(sub + '.json'):
-        print "Records for this subject are already present"
-    else:
-        recordFile = open(sub + '.json', "w")
-        recordFile.write(json_str)
-        recordFile.close()
 
 def delete(sub):
     """
     Delete a subject
     """
-    if fileDelete(sub + '.json'):
+    if fileDelete(sub):
         return True
     return False
 
-def update(sub, tag, day=date.today()):
+def update_json_file(tag, sub, date=date.today()):
     """
     Update a subject
     """
-    filename = sub + '.json'
-    if tag not in tags.keys():
-        print "Unknown tag"
-        return
+    if not fileExists(sub):
+        raise exc.SubjectError("Subject does not exit")
 
-    if fileExists(filename):
-        recordFile = open(filename, "r")
+    if tag not in fj.TAGS.keys():
+        raise exc.UnknownTag("Tag UNKNOWN")
+
+    with open(sub, "r") as recordFile:
         json_string = recordFile.read()
-        recordFile.close()
-        recordFile = open(filename, "w")
-        newdata = update_json_string(json_string, date, tags[tag])
-        recordFile.write(newdata)
-        recordFile.close()
 
-def display_names():
+    newdata = fj.update_json_string(json_string, date, fj.TAGS[tag])
+    with open(sub, "w") as recordFile:
+        recordFile.write(newdata)
+    return True
+
+def display_names(ext='.json', dire=pDir()):
     """
-    Display all subject name
+    yields all subject name
     """
-    pass
+    for filename in os.listdir(dire):
+        name, extension = os.path.splitext(fName)
+        if extension == ext:
+            yield filename
+
 
 def display_subject():
     """
