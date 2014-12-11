@@ -51,21 +51,25 @@ def delete(sub):
         return True
     return False
 
-def update(sub, tag, day=date.today()):
+def update(sub, tag, date=date.today()):
     """
     Update a subject
     """
     filename = sub + '.json'
+    if not fileExists(filename):
+        raise exc.SubjectError("Subject does not exit")
+
     if tag not in fj.TAGS.keys():
         raise exc.UnknownTag("Tag UNKNOWN")
 
-    if fileExists(filename):
-        with open(filename, "r") as recordFile:
-            json_string = recordFile.read()
+    with open(filename, "r") as recordFile:
+        json_string = recordFile.read()
+        print json_string
 
-        newdata = fj.update_json_string(json_string, date, tags[tag])
-        with open(filename, "w") as recordFile:
-            recordFile.write(newdata)
+    newdata = fj.update_json_string(json_string, date, fj.TAGS[tag])
+    with open(filename, "w") as recordFile:
+        recordFile.write(newdata)
+    return True
 
 def display_names():
     """

@@ -8,6 +8,12 @@ class SubjectExists(Exception):
     """
     pass
 
+class SubjectError(Exception):
+    """
+    Raised when problem with the subject file
+    """
+    pass
+
 class UnknownTag(Exception):
     """
     Raised when tag is not recognised 
