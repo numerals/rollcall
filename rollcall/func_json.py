@@ -5,9 +5,6 @@ Functions related to JSON
 import json
 from datetime import date, timedelta
 
-DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
-TAGS = ["attended", "missed", "holiday", "future"]
-
 def dict_to_json(json_dict):
     """
     convert from a dictionary to json
@@ -41,3 +38,17 @@ def gen_dict(semester_start, class_weekdays, semester_weeks=16):
         json_dict[format_date(d)] = "future"
 
     return json_dict
+
+def update_json_string(json_string, date, status):
+    subject_data = json_to_dict(json_string)
+    formatted_date = format_date(date)
+
+    if formatted_date not in subject_data.keys():
+        reply = ""
+        while reply not in "ny":
+            reply = raw_input(print "Invalid date. Extra class (y/n)?")
+        if reply == "n":
+            return
+
+    subject_data[formatted_date] = status
+    return dict_to_json(subject_data)
