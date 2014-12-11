@@ -64,18 +64,21 @@ def update(sub, tag, date=date.today()):
 
     with open(filename, "r") as recordFile:
         json_string = recordFile.read()
-        print json_string
 
     newdata = fj.update_json_string(json_string, date, fj.TAGS[tag])
     with open(filename, "w") as recordFile:
         recordFile.write(newdata)
     return True
 
-def display_names():
+def display_names(dire=pDir()):
     """
-    Display all subject name
+    yields all subject name
     """
-    pass
+    for filename in os.listdir(dire):
+        name, ext = os.path.splitext(fName)
+        if ext == '.json':
+            yield filename
+
 
 def display_subject():
     """
