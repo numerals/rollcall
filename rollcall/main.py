@@ -51,11 +51,11 @@ def delete(sub):
         return True
     return False
 
-def update(sub, tag, date=date.today()):
+def update(tag, sub, dire=pDir(), date=date.today()):
     """
     Update a subject
     """
-    filename = sub + '.json'
+    filename = os.path.join(dire, sub + '.json')
     if not fileExists(filename):
         raise exc.SubjectError("Subject does not exit")
 

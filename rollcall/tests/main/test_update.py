@@ -23,14 +23,14 @@ class Testupdate(unittest.TestCase):
 
     def test_update_file_exists(self):
         self.assertTrue(fileExists(self.sub))
-        self.assertTrue(update('sub', 'f'))
+        self.assertTrue(update('f', 'sub', self.dire))
 
     def test_update_file_does_not_exist(self):
         self.assertFalse(fileExists(self.new))
-        self.assertRaises(SubjectError, update, self.new, 'f')
+        self.assertRaises(SubjectError, update, 'f', self.new, self.dire)
 
     def test_update_unknow_tag(self):
-        self.assertRaises(UnknownTag, update, self.dummySub, 'blahblah')
+        self.assertRaises(UnknownTag, update, 'blahblah', self.dummySub, self.dire)
 
     def tearDown(self):
         os.remove(self.dummy)
