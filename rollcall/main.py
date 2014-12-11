@@ -3,14 +3,10 @@ Main module
 """
 
 import os
-from func_json import *
+import func_json as fj
+import exceptions as exc
 from datetime import date
 
-tags = { 'a' : "absent",
-         'p' : "present",
-         'f' : "future",
-         'h' : "holiday",
-         'o' : "other" }
 
 def pDir():
     """
@@ -18,33 +14,34 @@ def pDir():
     """
     return os.getcwd()
 
-def fileExists(fName, dire=pDir()):
+def fileExists(fName):
     """
     Check if a file exists
     """
-    if os.path.isfile(os.path.join(dire, fName)):
+    if os.path.isfile(fName):
         return True
     return False
 
-def fileDelete(fName, dire=pDir()):
+def add(json_str, sub, dire):
+    """
+    Add a subject
+    creates a new sub.json file
+    """
+    path = os.path.join(dire, sub + '.json')
+    if fileExists(path):
+        raise exc.SubjectExists("Records for this subject are already present")
+
+    with open(path, "w") as recordFile:
+        recordFile.write(json_str)
+
+def fileDelete(fName):
     """
     Delete a file and return status
     """
     if fileExists(fName):
-        os.remove(os.path.join(dire, fName))
+        os.remove(fName)
         return True
     return False
-
-def add(sub, json_str):
-    """
-    Add a subject
-    """
-    if fileExists(sub + '.json'):
-        print "Records for this subject are already present"
-    else:
-        recordFile = open(sub + '.json', "w")
-        recordFile.write(json_str)
-        recordFile.close()
 
 def delete(sub):
     """
@@ -59,18 +56,16 @@ def update(sub, tag, day=date.today()):
     Update a subject
     """
     filename = sub + '.json'
-    if tag not in tags.keys():
-        print "Unknown tag"
-        return
+    if tag not in fj.TAGS.keys():
+        raise exc.UnknownTag("Tag UNKNOWN")
 
     if fileExists(filename):
-        recordFile = open(filename, "r")
-        json_string = recordFile.read()
-        recordFile.close()
-        recordFile = open(filename, "w")
-        newdata = update_json_string(json_string, date, tags[tag])
-        recordFile.write(newdata)
-        recordFile.close()
+        with open(filename, "r") as recordFile:
+            json_string = recordFile.read()
+
+        newdata = fj.update_json_string(json_string, date, tags[tag])
+        with open(filename, "w") as recordFile:
+            recordFile.write(newdata)
 
 def display_names():
     """

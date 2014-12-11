@@ -5,6 +5,12 @@ Functions related to JSON
 import json
 from datetime import date, timedelta
 
+TAGS = { 'a' : "absent",
+         'p' : "present",
+         'f' : "future",
+         'h' : "holiday",
+         'o' : "other" }
+
 def dict_to_json(json_dict):
     """
     convert from a dictionary to json
