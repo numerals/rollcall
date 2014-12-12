@@ -8,9 +8,6 @@ class Testadd(unittest.TestCase):
     """
     tests the gen_dict function in func_json module
     """
-    def setUp(self):
-        pass
-
     def test_gen_dict_length(self):
         json = gen_dict(date.today(), [0,1,2,3,4,5,6], 1)
         self.assertEqual(len(json), 7)
@@ -24,7 +21,3 @@ class Testadd(unittest.TestCase):
             current = today + timedelta(days=x)
             formatted = format_date(current)
             self.assertTrue(json.has_key(formatted))
-
-    def tearDown(self):
-        pass
-
