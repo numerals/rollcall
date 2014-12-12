@@ -3,6 +3,7 @@ Functions related to JSON
 """
 
 import json
+import exceptions
 from datetime import date, timedelta
 
 TAGS = { 'a' : "absent",
@@ -15,7 +16,7 @@ def dict_to_json(json_dict):
     """
     convert from a dictionary to json
     """
-    return json.dumps(json_dict, indent=4, separators=(',', ': '))
+    return json.dumps(json_dict) #, indent=4, separators=(',', ': '))
 
 def json_to_dict(json_str):
     """
@@ -46,15 +47,17 @@ def gen_dict(semester_start, class_weekdays, semester_weeks=16):
     return json_dict
 
 def update_json_string(json_string, date, status):
+    """
+    Updates a json string
+    changes status of date
+    incase date is not a key
+    raises
+    """
     subject_data = json_to_dict(json_string)
     formatted_date = format_date(date)
 
-    if formatted_date not in subject_data.keys():
-        reply = ""
-        while reply not in "ny":
-            reply = raw_input("Invalid date. Extra class (y/n)?")
-        if reply == "n":
-            return
+    if not subject_data.has_key(formatted_date):
+        raise exceptions.NoDate("No such date")
 
     subject_data[formatted_date] = status
     return dict_to_json(subject_data)

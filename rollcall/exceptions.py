@@ -14,6 +14,12 @@ class SubjectError(Exception):
     """
     pass
 
+class NoDate(Exception):
+    """
+    Raised when no such date found
+    """
+    pass
+
 class UnknownTag(Exception):
     """
     Raised when tag is not recognised 
