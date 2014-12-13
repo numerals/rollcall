@@ -1,6 +1,6 @@
 import unittest
 from datetime import date, timedelta
-from rollcall.func_json import gen_dict, format_date, update_status, TAGS
+from rollcall.func_json import gen_dict, format_date, TAGS
 from rollcall.display import total_classes_held
 
 class TestTotalClassesHeld(unittest.TestCase):
@@ -17,5 +17,3 @@ class TestTotalClassesHeld(unittest.TestCase):
             formatted = format_date(current)
             held = total_classes_held(self.json, formatted)
             self.assertEqual(len(held), x)
-
-

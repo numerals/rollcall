@@ -48,18 +48,25 @@ def total_classes_held(json_dic, field):
             held.append(field)
     return held
 
-def classes_with_tag(json_dic, tag):
+def classes_with_tag(json_dic, tag=fj.TAGS['p']):
     """
     takes in a json dictionary
     returns list of all the classes 
     with the tag
     """
-    pass
+    classes = []
+    for field in json_dic:
+        if fj.get_status(json_dic, field) == tag:
+            classes.append(field)
+    return classes
 
-def classes_held_with_tag(json_dic, tag):
+def percent(json_dic, tag=fj.TAGS['p']):
     """
     takes in a json dictionary
-    returns list of all the classes 
-    held with the tag
+    returns percentage of classes with tags
+    wrt total classes
     """
-    pass
+    total = total_classes(json_dic)
+    classes = len(classes_with_tag(json_dic, tag))
+    percent = (float(classes) / total) * 100
+    return percent
