@@ -36,7 +36,7 @@ def add(json_str, sub):
     creates a new sub.json file
     """
     if fileExists(sub):
-        raise exce.SubjectExists("Records for this subject are already present")
+        raise exce.SubjectExists("Records for %s are already present" %(sub))
 
     with open(sub, "w") as recordFile:
         recordFile.write(json_str)
@@ -78,6 +78,36 @@ def display_names(ext='.json', dire=pDir()):
         name, extension = os.path.splitext(filename)
         if extension == ext:
             yield filename
+
+def gen_total_classes(field=None, ext='.json', dire=pDir()):
+    """
+    yields (subject, total_classes_till_field)
+    """
+    for filename in display_names(ext, dire):
+        path = full_path_to(filename, dire)
+        json_dic = get_json_file(path)
+        total = len(display.total_classes(json_dic, field))
+        yield filename, total
+
+def gen_classes_with_tag(tag=fj.TAGS['p'], ext='.json', dire=pDir()):
+    """
+    yields (subject, total_classes_with_tag)
+    """
+    for filename in display_names(ext, dire):
+        path = full_path_to(filename, dire)
+        json_dic = get_json_file(path)
+        total = len(display.classes_with_tag(json_dic, tag))
+        yield filename, total
+
+def gen_percent(tag=fj.TAGS['p'], ext='.json', dire=pDir()):
+    """
+    yields (subject, total_classes_with_tag)
+    """
+    for filename in display_names(ext, dire):
+        path = full_path_to(filename, dire)
+        json_dic = get_json_file(path)
+        percent = display.percent(json_dic, tag)
+        yield filename, percent
 
 def fileDelete(fName):
     """

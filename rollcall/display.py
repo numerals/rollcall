@@ -30,21 +30,14 @@ def compare_date(first, second):
         return val
     return 0
 
-def total_classes(json_dic):
-    """
-    Takes in a json dictionary
-    returns total classes
-    """
-    return len(json_dic)
-
-def total_classes_held(json_dic, field):
+def total_classes(json_dic, field=None):
     """
     Takes in a json dictionary
     returns list of all the classes held
     """
     held = []
     for date in json_dic:
-        if compare_date(date, field) == -1:
+        if field == None or compare_date(date, field) == -1:
             held.append(field)
     return held
 
@@ -66,7 +59,7 @@ def percent(json_dic, tag=fj.TAGS['p']):
     returns percentage of classes with tags
     wrt total classes
     """
-    total = total_classes(json_dic)
+    total = len(total_classes(json_dic))
     classes = len(classes_with_tag(json_dic, tag))
     percent = (float(classes) / total) * 100
     return percent
