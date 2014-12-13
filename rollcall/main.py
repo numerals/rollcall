@@ -5,7 +5,7 @@ Main module
 import os
 import func_json as fj
 import display
-import exceptions as exc
+import exce
 from datetime import date
 
 
@@ -36,7 +36,7 @@ def add(json_str, sub):
     creates a new sub.json file
     """
     if fileExists(sub):
-        raise exc.SubjectExists("Records for this subject are already present")
+        raise exce.SubjectExists("Records for this subject are already present")
 
     with open(sub, "w") as recordFile:
         recordFile.write(json_str)
@@ -46,10 +46,10 @@ def update_json_file(tag, sub, date=date.today()):
     Update a subject
     """
     if not fileExists(sub):
-        raise exc.SubjectError("Subject does not exit")
+        raise exce.SubjectError("Subject does not exit")
 
     if tag not in fj.TAGS.keys():
-        raise exc.UnknownTag("Tag UNKNOWN")
+        raise exce.UnknownTag("Tag UNKNOWN")
 
     with open(sub, "r") as recordFile:
         json_string = recordFile.read()

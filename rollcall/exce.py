@@ -14,7 +14,7 @@ class SubjectError(Exception):
     """
     pass
 
-class NoDate(Exception):
+class NoField(Exception):
     """
     Raised when no such date found
     """

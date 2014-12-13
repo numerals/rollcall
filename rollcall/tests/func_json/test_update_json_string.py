@@ -1,7 +1,6 @@
 import unittest
-import os
 from datetime import date, timedelta
-from rollcall.exceptions import NoDate
+from rollcall.exce import NoField
 from rollcall.tests import helper
 from rollcall.func_json import *
 
@@ -33,6 +32,6 @@ class Testadd(unittest.TestCase):
 
     def test_update_json_string_no_such_date(self):
         anything = self.today + timedelta(days=self.length)
-        self.assertRaises(NoDate, update_json_string, self.str_json, anything, 'check')
+        self.assertRaises(NoField, update_json_string, self.str_json, anything, 'check')
 
 

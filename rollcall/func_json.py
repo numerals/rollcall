@@ -3,7 +3,7 @@ Functions related to JSON
 """
 
 import json
-import exceptions
+import exce
 from datetime import date, timedelta
 
 TAGS = { 'a' : "absent",
@@ -29,6 +29,27 @@ def format_date(d, form="%d/%m/%y"):
     formats dates
     """
     return d.strftime(form)
+
+def get_status(json_dic, field):
+    """
+    Gets the value of a field
+    returns the value
+    if no such field raises NoField exception
+    """
+    if not json_dic.has_key(field):
+        raise exce.NoField("No such field: %s" %(field))
+    return json_dic[field]
+
+def update_status(json_dic, field, val):
+    """
+    updates the value of a field
+    returns the value
+    if no such field raises NoField exception
+    """
+    if not json_dic.has_key(field):
+        raise exce.NoField("No such field: %s" %(field))
+    json_dic[field] = val
+    return json_dic[field]
 
 def gen_dict(semester_start, class_weekdays, semester_weeks=16):
     """
@@ -57,7 +78,7 @@ def update_json_string(json_string, date, status):
     formatted_date = format_date(date)
 
     if not subject_data.has_key(formatted_date):
-        raise exceptions.NoDate("No such date")
+        raise exce.NoField("No such date")
 
     subject_data[formatted_date] = status
     return dict_to_json(subject_data)
