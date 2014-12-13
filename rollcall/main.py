@@ -41,22 +41,33 @@ def add(json_str, sub):
     with open(sub, "w") as recordFile:
         recordFile.write(json_str)
 
-def update_json_file(tag, sub, date=date.today()):
+def get_json_file(sub):
     """
-    Update a subject
+    Gets the json string from the file
+    returns json as a dictionary
     """
     if not fileExists(sub):
-        raise exce.SubjectError("Subject does not exit")
-
-    if tag not in fj.TAGS.keys():
-        raise exce.UnknownTag("Tag UNKNOWN")
+        raise exce.SubjectError("Subject: %s does not exit" %(sub))
 
     with open(sub, "r") as recordFile:
         json_string = recordFile.read()
 
-    newdata = fj.update_json_string(json_string, date, fj.TAGS[tag])
+    return fj.json_to_dict(json_string)
+
+def update_json_file(tag, sub, date=date.today()):
+    """
+    Update a subject
+    """
+    if tag not in fj.TAGS.keys():
+        raise exce.UnknownTag("Tag: %s UNKNOWN" %(tag))
+
+    json_dic = get_json_file(sub)
+
+    new_json= fj.update_json_dict(json_dic, date, fj.TAGS[tag])
+    newdata = fj.dict_to_json(new_json)
     with open(sub, "w") as recordFile:
         recordFile.write(newdata)
+
     return True
 
 def display_names(ext='.json', dire=pDir()):

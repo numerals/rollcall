@@ -67,18 +67,17 @@ def gen_dict(semester_start, class_weekdays, semester_weeks=16):
 
     return json_dict
 
-def update_json_string(json_string, date, status):
+def update_json_dict(json_dic, date, status):
     """
-    Updates a json string
+    Updates a json dict
     changes status of date
     incase date is not a key
-    raises
+    raises NoField error
     """
-    subject_data = json_to_dict(json_string)
     formatted_date = format_date(date)
 
-    if not subject_data.has_key(formatted_date):
-        raise exce.NoField("No such date")
+    if not json_dic.has_key(formatted_date):
+        raise exce.NoField("No Field: %s" %(date))
 
-    subject_data[formatted_date] = status
-    return dict_to_json(subject_data)
+    json_dic[formatted_date] = status
+    return json_dic
