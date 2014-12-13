@@ -2,7 +2,7 @@ import unittest
 import os
 from rollcall.tests import helper
 from rollcall.main import add, fileExists
-from rollcall.exceptions import SubjectExists
+from rollcall.exce import SubjectExists
 
 class Testadd(unittest.TestCase):
     """

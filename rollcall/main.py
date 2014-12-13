@@ -5,7 +5,7 @@ Main module
 import os
 import func_json as fj
 import display
-import exceptions as exc
+import exce
 from datetime import date
 
 
@@ -36,27 +36,38 @@ def add(json_str, sub):
     creates a new sub.json file
     """
     if fileExists(sub):
-        raise exc.SubjectExists("Records for this subject are already present")
+        raise exce.SubjectExists("Records for %s are already present" %(sub))
 
     with open(sub, "w") as recordFile:
         recordFile.write(json_str)
+
+def get_json_file(sub):
+    """
+    Gets the json string from the file
+    returns json as a dictionary
+    """
+    if not fileExists(sub):
+        raise exce.SubjectError("Subject: %s does not exit" %(sub))
+
+    with open(sub, "r") as recordFile:
+        json_string = recordFile.read()
+
+    return fj.json_to_dict(json_string)
 
 def update_json_file(tag, sub, date=date.today()):
     """
     Update a subject
     """
-    if not fileExists(sub):
-        raise exc.SubjectError("Subject does not exit")
-
     if tag not in fj.TAGS.keys():
-        raise exc.UnknownTag("Tag UNKNOWN")
+        raise exce.UnknownTag("Tag: %s UNKNOWN" %(tag))
 
-    with open(sub, "r") as recordFile:
-        json_string = recordFile.read()
+    json_dic = get_json_file(sub)
 
-    newdata = fj.update_json_string(json_string, date, fj.TAGS[tag])
+    new_json= fj.update_json_dict(json_dic, date, fj.TAGS[tag])
+    newdata = fj.dict_to_json(new_json)
     with open(sub, "w") as recordFile:
         recordFile.write(newdata)
+
     return True
 
 def display_names(ext='.json', dire=pDir()):
@@ -67,6 +78,36 @@ def display_names(ext='.json', dire=pDir()):
         name, extension = os.path.splitext(filename)
         if extension == ext:
             yield filename
+
+def gen_total_classes(field=None, ext='.json', dire=pDir()):
+    """
+    yields (subject, total_classes_till_field)
+    """
+    for filename in display_names(ext, dire):
+        path = full_path_to(filename, dire)
+        json_dic = get_json_file(path)
+        total = len(display.total_classes(json_dic, field))
+        yield filename, total
+
+def gen_classes_with_tag(tag=fj.TAGS['p'], ext='.json', dire=pDir()):
+    """
+    yields (subject, total_classes_with_tag)
+    """
+    for filename in display_names(ext, dire):
+        path = full_path_to(filename, dire)
+        json_dic = get_json_file(path)
+        total = len(display.classes_with_tag(json_dic, tag))
+        yield filename, total
+
+def gen_percent(tag=fj.TAGS['p'], ext='.json', dire=pDir()):
+    """
+    yields (subject, total_classes_with_tag)
+    """
+    for filename in display_names(ext, dire):
+        path = full_path_to(filename, dire)
+        json_dic = get_json_file(path)
+        percent = display.percent(json_dic, tag)
+        yield filename, percent
 
 def fileDelete(fName):
     """

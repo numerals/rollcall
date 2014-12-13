@@ -4,7 +4,7 @@ from rollcall.tests import helper
 from datetime import date
 from rollcall.main import add, update_json_file, fileExists
 from rollcall.func_json import gen_dict, dict_to_json
-from rollcall.exceptions import UnknownTag, SubjectError
+from rollcall.exce import UnknownTag, SubjectError
 
 class Testupdate_json_file(unittest.TestCase):
     """
