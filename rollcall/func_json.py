@@ -47,7 +47,7 @@ def update_status(json_dic, field, val):
     if no such field raises NoField exception
     """
     if not json_dic.has_key(field):
-        raise exce.NoField("No such field: %s" %(field))
+        raise exce.NoField("No such Field : %s" %(field))
     json_dic[field] = val
     return json_dic[field]
 
@@ -63,7 +63,7 @@ def gen_dict(semester_start, class_weekdays, semester_weeks=16):
 
     json_dict = {}
     for d in class_dates:
-        json_dict[format_date(d)] = "future"
+        json_dict[format_date(d)] = TAGS['f']
 
     return json_dict
 
@@ -77,7 +77,7 @@ def update_json_dict(json_dic, date, status):
     formatted_date = format_date(date)
 
     if not json_dic.has_key(formatted_date):
-        raise exce.NoField("No Field: %s" %(date))
+        raise exce.NoField("No such Date : %s" %(date))
 
     json_dic[formatted_date] = status
     return json_dic

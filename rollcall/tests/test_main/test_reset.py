@@ -19,6 +19,11 @@ class Testadd(unittest.TestCase):
         helper.newFile(self.notjson)
         self.assertTrue(fileExists(self.dummy))
         self.assertTrue(fileExists(self.new))
+        self.assertTrue(fileExists(self.notjson))
         reset('.json', self.dire)
         self.assertFalse(fileExists(self.dummy))
         self.assertFalse(fileExists(self.new))
+        self.assertTrue(fileExists(self.notjson))
+
+    def tearDown(self):
+        os.remove(self.notjson)

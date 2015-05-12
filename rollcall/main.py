@@ -47,7 +47,7 @@ def get_json_file(sub):
     returns json as a dictionary
     """
     if not fileExists(sub):
-        raise exce.SubjectError("Subject: %s does not exit" %(sub))
+        raise exce.SubjectError("Subject: %s does not exist" %(sub))
 
     with open(sub, "r") as recordFile:
         json_string = recordFile.read()
@@ -109,22 +109,13 @@ def gen_percent(tag=fj.TAGS['p'], ext='.json', dire=pDir()):
         percent = display.percent(json_dic, tag)
         yield filename, percent
 
-def fileDelete(fName):
+def deleteSubject(fName):
     """
-    Delete a file and return status
+    Delete a file and raises SubjectError if not Found
     """
-    if fileExists(fName):
-        os.remove(fName)
-        return True
-    return False
-
-def delete(sub):
-    """
-    Delete a subject
-    """
-    if fileDelete(sub):
-        return True
-    return False
+    if not fileExists(fName):
+        raise exce.SubjectError("Subject: %s is not Found" %(fName))
+    os.remove(fName)
 
 def reset(ext='.json', dire=pDir()):
     """
