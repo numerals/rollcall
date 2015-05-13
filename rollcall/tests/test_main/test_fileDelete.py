@@ -1,7 +1,8 @@
 import unittest
 import os
 from rollcall.tests import helper
-from rollcall.main import fileDelete, fileExists
+from rollcall.main import deleteSubject, fileExists
+from rollcall.exce import SubjectError
 
 class TestfileDelete(unittest.TestCase):
     """
@@ -14,11 +15,11 @@ class TestfileDelete(unittest.TestCase):
         self.dummy = os.path.join(self.dire, 'dummy.json')
         helper.newFile(self.dummy)
         self.assertTrue(fileExists(self.dummy))
-        self.assertTrue(fileDelete(self.dummy))
+        deleteSubject(self.dummy)
         self.assertFalse(fileExists(self.dummy))
 
     def test_fileDelete_file_does_not_exist(self):
         self.new = os.path.join(self.dire, 'new.json')
         self.assertFalse(fileExists(self.new))
-        self.assertFalse(fileDelete(self.new))
+        self.assertRaises(SubjectError, deleteSubject, self.new)
         self.assertFalse(fileExists(self.new))
