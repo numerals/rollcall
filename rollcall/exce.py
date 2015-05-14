@@ -22,6 +22,6 @@ class NoField(Exception):
 
 class UnknownTag(Exception):
     """
-    Raised when tag is not recognised 
+    Raised when tag is not recognised
     """
     pass
