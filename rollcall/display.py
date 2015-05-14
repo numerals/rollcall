@@ -44,7 +44,7 @@ def total_classes(json_dic, field=None):
 def classes_with_tag(json_dic, tag=fj.TAGS['p']):
     """
     takes in a json dictionary
-    returns list of all the classes 
+    returns list of all the classes
     with the tag
     """
     classes = []
